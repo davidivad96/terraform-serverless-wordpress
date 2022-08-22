@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   container_definitions = jsonencode([
     {
       name : "bitnami-wordpress",
-      image : "bitnami/wordpress:5.6.1",
+      image : "bitnami/wordpress:6.0.1",
       cpu : 256,
       memory : 512,
       portMappings : [{

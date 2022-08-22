@@ -1,5 +1,5 @@
 variable "APP_NAME" {
-  default = "imagina-energia"
+  default = "serverless-wordpress"
 }
 
 variable "ENV" {

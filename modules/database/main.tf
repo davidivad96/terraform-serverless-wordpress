@@ -13,7 +13,6 @@ resource "aws_db_subnet_group" "db_subnet" {
 
 resource "aws_rds_cluster" "aurora_cluster" {
   cluster_identifier        = "aurora-cluster"
-  availability_zones        = var.DB_AVAILABILITY_ZONES
   master_username           = "admin"
   master_password           = var.AURORA_DB_PASSWORD
   port                      = 3306
@@ -24,6 +23,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
   db_subnet_group_name      = aws_db_subnet_group.db_subnet.name
   skip_final_snapshot       = false
   final_snapshot_identifier = "aurora-cluster-final-snapshot"
+  vpc_security_group_ids    = [var.DB_SECURITY_GROUP_ID]
   tags = {
     Name     = "aurora-cluster"
     APP_NAME = var.APP_NAME

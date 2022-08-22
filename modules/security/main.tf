@@ -48,6 +48,25 @@ resource "aws_security_group" "ecs_service_security_group" {
   }
 }
 
+// Aurora Database Security Group
+
+resource "aws_security_group" "aurora_db_security_group" {
+  name        = "aurora-db-security-group"
+  description = "Aurora Database Security Group"
+  vpc_id      = var.MAIN_VPC_ID
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ecs_service_security_group.id]
+  }
+  tags = {
+    Name     = "aurora-db-security-group"
+    APP_NAME = "${var.APP_NAME}"
+    ENV      = "${var.ENV}"
+  }
+}
+
 // ECS Task Definition Execution Role
 
 resource "aws_iam_role" "ecs_task_definition_execution_role" {
@@ -59,15 +78,7 @@ resource "aws_iam_role" "ecs_task_definition_execution_role" {
       Principal = {
         Service = "ecs-tasks.amazonaws.com"
       }
-      Action = "sts:AssumeRole",
-      Condition = {
-        ArnLike = {
-          "aws:SourceArn" = "arn:aws:ecs:${var.AWS_REGION}:${var.AWS_ACCOUNT_ID}:*"
-        },
-        StringEquals = {
-          "aws:SourceAccount" = "${var.AWS_ACCOUNT_ID}"
-        }
-      }
+      Action = "sts:AssumeRole"
     }]
   })
   tags = {
@@ -192,14 +203,14 @@ resource "aws_wafv2_web_acl_logging_configuration" "web_acl_logging_configuratio
 
 resource "random_password" "master_password" {
   length  = 16
-  special = true
+  special = false
 }
 
 resource "aws_secretsmanager_secret" "db_password" {
-  name        = "db-password"
+  name        = "db-password-1"
   description = "Database password"
   tags = {
-    Name     = "db-password"
+    Name     = "db-password-1"
     APP_NAME = "${var.APP_NAME}"
     ENV      = "${var.ENV}"
   }

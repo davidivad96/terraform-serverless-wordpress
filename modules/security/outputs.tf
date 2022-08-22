@@ -13,3 +13,7 @@ output "ecs_task_definition_execution_role_arn" {
 output "secrets_manager_db_password" {
   value = random_password.master_password.result
 }
+
+output "db_security_group_id" {
+  value = aws_security_group.aurora_db_security_group.id
+}

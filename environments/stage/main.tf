@@ -5,7 +5,7 @@ terraform {
     organization = "davidivad96"
 
     workspaces {
-      name = "imagina-energia-stage"
+      name = "serverless-wordpress"
     }
   }
 }
@@ -71,11 +71,12 @@ module "security" {
 # Aurora Database
 
 module "database" {
-  source              = "../../modules/database"
-  APP_NAME            = var.APP_NAME
-  ENV                 = var.ENV
-  AWS_REGION          = var.AWS_REGION
-  AWS_ACCOUNT_ID      = var.AWS_ACCOUNT_ID
-  PRIVATE_SUBNETS_IDS = module.network.private_subnets_ids
-  AURORA_DB_PASSWORD  = module.security.secrets_manager_db_password
+  source               = "../../modules/database"
+  APP_NAME             = var.APP_NAME
+  ENV                  = var.ENV
+  AWS_REGION           = var.AWS_REGION
+  AWS_ACCOUNT_ID       = var.AWS_ACCOUNT_ID
+  PRIVATE_SUBNETS_IDS  = module.network.private_subnets_ids
+  AURORA_DB_PASSWORD   = module.security.secrets_manager_db_password
+  DB_SECURITY_GROUP_ID = module.security.db_security_group_id
 }

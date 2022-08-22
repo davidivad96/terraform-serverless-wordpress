@@ -10,6 +10,4 @@ variable "PRIVATE_SUBNETS_IDS" {}
 
 variable "AURORA_DB_PASSWORD" {}
 
-variable "DB_AVAILABILITY_ZONES" {
-  default = ["us-east-1a", "us-east-1b", "us-east-1c"]
-}
+variable "DB_SECURITY_GROUP_ID" {}
