@@ -23,3 +23,5 @@ variable "AURORA_DB_NAME" {}
 variable "AURORA_DB_USER" {}
 
 variable "AURORA_DB_PASSWORD" {}
+
+variable "EFS_FILE_SYSTEM_ID" {}

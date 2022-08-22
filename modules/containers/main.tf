@@ -12,7 +12,12 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 // ECS Task Definition
 
 resource "aws_ecs_task_definition" "ecs_task_definition" {
-  family = "ecs-task-definition"
+  family                   = "ecs-task-definition"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 256
+  memory                   = 512
+  execution_role_arn       = var.ECS_TASK_DEFINITION_EXECUTION_ROLE_ARN
   container_definitions = jsonencode([
     {
       name : "bitnami-wordpress",
@@ -50,11 +55,14 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       }
     }
   ])
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  cpu                      = 256
-  memory                   = 512
-  execution_role_arn       = var.ECS_TASK_DEFINITION_EXECUTION_ROLE_ARN
+  volume {
+    name = "bitnami-wordpress-volume"
+    efs_volume_configuration {
+      file_system_id     = var.EFS_FILE_SYSTEM_ID
+      root_directory     = "/"
+      transit_encryption = "ENABLED"
+    }
+  }
   tags = {
     Name     = "ecs-task-definition"
     APP_NAME = "${var.APP_NAME}"

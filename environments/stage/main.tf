@@ -12,7 +12,7 @@ terraform {
 
 ## Modules ##
 
-# VPC; Subnets; Route tables; Gateways
+# VPC, Subnets, Route Tables and Gateways
 
 module "network" {
   source         = "../../modules/network"
@@ -54,6 +54,7 @@ module "containers" {
   AURORA_DB_NAME                         = module.database.aurora_db_name
   AURORA_DB_USER                         = module.database.aurora_db_user
   AURORA_DB_PASSWORD                     = module.security.secrets_manager_db_password
+  EFS_FILE_SYSTEM_ID                     = module.storage.efs_file_system_id
 }
 
 # Security groups, IAM Roles and AWS WAF
@@ -79,4 +80,16 @@ module "database" {
   PRIVATE_SUBNETS_IDS  = module.network.private_subnets_ids
   AURORA_DB_PASSWORD   = module.security.secrets_manager_db_password
   DB_SECURITY_GROUP_ID = module.security.db_security_group_id
+}
+
+# EFS
+
+module "storage" {
+  source                              = "../../modules/storage"
+  APP_NAME                            = var.APP_NAME
+  ENV                                 = var.ENV
+  AWS_REGION                          = var.AWS_REGION
+  AWS_ACCOUNT_ID                      = var.AWS_ACCOUNT_ID
+  PRIVATE_SUBNETS_IDS                 = module.network.private_subnets_ids
+  EFS_MOUNT_TARGETS_SECURITY_GROUP_ID = module.security.efs_mount_targets_security_group_id
 }

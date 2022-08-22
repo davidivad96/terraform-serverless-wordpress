@@ -67,6 +67,25 @@ resource "aws_security_group" "aurora_db_security_group" {
   }
 }
 
+// EFS Mount Targets Security Group
+
+resource "aws_security_group" "efs_mount_targets_security_group" {
+  name        = "efs-mount-targets-security-group"
+  description = "EFS Mount Targets Security Group"
+  vpc_id      = var.MAIN_VPC_ID
+  ingress {
+    from_port       = 2049
+    to_port         = 2049
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ecs_service_security_group.id]
+  }
+  tags = {
+    Name     = "efs-mount-targets-security-group"
+    APP_NAME = "${var.APP_NAME}"
+    ENV      = "${var.ENV}"
+  }
+}
+
 // ECS Task Definition Execution Role
 
 resource "aws_iam_role" "ecs_task_definition_execution_role" {

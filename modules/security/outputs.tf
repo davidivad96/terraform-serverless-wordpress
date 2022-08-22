@@ -17,3 +17,7 @@ output "secrets_manager_db_password" {
 output "db_security_group_id" {
   value = aws_security_group.aurora_db_security_group.id
 }
+
+output "efs_mount_targets_security_group_id" {
+  value = aws_security_group.efs_mount_targets_security_group.id
+}
