@@ -7,13 +7,11 @@ variable "ENV" {
 }
 
 variable "AWS_REGION" {
-  default     = "us-east-1"
-  description = "US East (Northern Virginia) Region"
+  default = "us-east-1"
 }
 
 variable "AWS_ACCOUNT_ID" {
-  default     = "222172367795"
-  description = "AWS Account ID"
+  default = ""
 }
 
 variable "AWS_ACCESS_KEY_ID" {

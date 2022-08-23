@@ -30,19 +30,19 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       }],
       environment : [{
         name : "WORDPRESS_DATABASE_HOST",
-        value : var.AURORA_DB_HOST,
+        value : var.AURORA_CLUSTER.endpoint,
         }, {
         name : "WORDPRESS_DATABASE_PORT_NUMBER",
-        value : tostring(var.AURORA_DB_PORT_NUMBER),
+        value : tostring(var.AURORA_CLUSTER.port),
         }, {
         name : "WORDPRESS_DATABASE_NAME",
-        value : var.AURORA_DB_NAME,
+        value : var.AURORA_CLUSTER.database_name,
         }, {
         name : "WORDPRESS_DATABASE_USER",
-        value : var.AURORA_DB_USER,
+        value : var.AURORA_CLUSTER.master_username,
         }, {
         name : "WORDPRESS_DATABASE_PASSWORD",
-        value : var.AURORA_DB_PASSWORD,
+        value : var.AURORA_CLUSTER_PASSWORD,
       }],
       logConfiguration : {
         logDriver : "awslogs",
@@ -58,7 +58,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   volume {
     name = "bitnami-wordpress-volume"
     efs_volume_configuration {
-      file_system_id     = var.EFS_FILE_SYSTEM_ID
+      file_system_id     = var.EFS_FILE_SYSTEM.id
       root_directory     = "/"
       transit_encryption = "ENABLED"
     }
@@ -87,6 +87,7 @@ resource "aws_ecs_service" "ecs_service" {
     subnets         = var.PRIVATE_SUBNETS_IDS
     security_groups = [var.ECS_SERVICE_SECURITY_GROUP_ID]
   }
+  depends_on = [var.AURORA_CLUSTER, var.EFS_FILE_SYSTEM]
   tags = {
     Name     = "ecs-service"
     APP_NAME = "${var.APP_NAME}"

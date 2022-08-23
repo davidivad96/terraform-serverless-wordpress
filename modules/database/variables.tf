@@ -8,6 +8,6 @@ variable "AWS_ACCOUNT_ID" {}
 
 variable "PRIVATE_SUBNETS_IDS" {}
 
-variable "AURORA_DB_PASSWORD" {}
+variable "AURORA_CLUSTER_PASSWORD" {}
 
-variable "DB_SECURITY_GROUP_ID" {}
+variable "AURORA_SECURITY_GROUP_ID" {}

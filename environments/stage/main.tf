@@ -49,12 +49,9 @@ module "containers" {
   PRIVATE_SUBNETS_IDS                    = module.network.private_subnets_ids
   ECS_SERVICE_SECURITY_GROUP_ID          = module.security.ecs_service_security_group_id
   ECS_TASK_DEFINITION_EXECUTION_ROLE_ARN = module.security.ecs_task_definition_execution_role_arn
-  AURORA_DB_HOST                         = module.database.aurora_db_host
-  AURORA_DB_PORT_NUMBER                  = module.database.aurora_db_port_number
-  AURORA_DB_NAME                         = module.database.aurora_db_name
-  AURORA_DB_USER                         = module.database.aurora_db_user
-  AURORA_DB_PASSWORD                     = module.security.secrets_manager_db_password
-  EFS_FILE_SYSTEM_ID                     = module.storage.efs_file_system_id
+  AURORA_CLUSTER                         = module.database.aurora_cluster
+  AURORA_CLUSTER_PASSWORD                = module.security.secrets_manager_aurora_password
+  EFS_FILE_SYSTEM                        = module.storage.efs_file_system
 }
 
 # Security groups, IAM Roles and AWS WAF
@@ -72,14 +69,14 @@ module "security" {
 # Aurora Database
 
 module "database" {
-  source               = "../../modules/database"
-  APP_NAME             = var.APP_NAME
-  ENV                  = var.ENV
-  AWS_REGION           = var.AWS_REGION
-  AWS_ACCOUNT_ID       = var.AWS_ACCOUNT_ID
-  PRIVATE_SUBNETS_IDS  = module.network.private_subnets_ids
-  AURORA_DB_PASSWORD   = module.security.secrets_manager_db_password
-  DB_SECURITY_GROUP_ID = module.security.db_security_group_id
+  source                   = "../../modules/database"
+  APP_NAME                 = var.APP_NAME
+  ENV                      = var.ENV
+  AWS_REGION               = var.AWS_REGION
+  AWS_ACCOUNT_ID           = var.AWS_ACCOUNT_ID
+  PRIVATE_SUBNETS_IDS      = module.network.private_subnets_ids
+  AURORA_CLUSTER_PASSWORD  = module.security.secrets_manager_aurora_password
+  AURORA_SECURITY_GROUP_ID = module.security.aurora_security_group_id
 }
 
 # EFS

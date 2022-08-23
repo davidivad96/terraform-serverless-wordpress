@@ -50,8 +50,8 @@ resource "aws_security_group" "ecs_service_security_group" {
 
 // Aurora Database Security Group
 
-resource "aws_security_group" "aurora_db_security_group" {
-  name        = "aurora-db-security-group"
+resource "aws_security_group" "aurora_security_group" {
+  name        = "aurora-security-group"
   description = "Aurora Database Security Group"
   vpc_id      = var.MAIN_VPC_ID
   ingress {
@@ -61,7 +61,7 @@ resource "aws_security_group" "aurora_db_security_group" {
     security_groups = [aws_security_group.ecs_service_security_group.id]
   }
   tags = {
-    Name     = "aurora-db-security-group"
+    Name     = "aurora-security-group"
     APP_NAME = "${var.APP_NAME}"
     ENV      = "${var.ENV}"
   }
@@ -225,17 +225,17 @@ resource "random_password" "master_password" {
   special = false
 }
 
-resource "aws_secretsmanager_secret" "db_password" {
-  name        = "db-password-1"
+resource "aws_secretsmanager_secret" "aurora_password" {
+  name        = "aurora-password-2"
   description = "Database password"
   tags = {
-    Name     = "db-password-1"
+    Name     = "aurora-password-2"
     APP_NAME = "${var.APP_NAME}"
     ENV      = "${var.ENV}"
   }
 }
 
-resource "aws_secretsmanager_secret_version" "db_password_version" {
-  secret_id     = aws_secretsmanager_secret.db_password.id
+resource "aws_secretsmanager_secret_version" "aurora_password_version" {
+  secret_id     = aws_secretsmanager_secret.aurora_password.id
   secret_string = random_password.master_password.result
 }

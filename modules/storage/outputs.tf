@@ -1,3 +1,3 @@
-output "efs_file_system_id" {
-  value = aws_efs_file_system.efs_file_system.id
+output "efs_file_system" {
+  value = aws_efs_file_system.efs_file_system
 }
