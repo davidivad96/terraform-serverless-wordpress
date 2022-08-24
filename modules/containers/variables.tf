@@ -19,3 +19,11 @@ variable "AURORA_CLUSTER" {}
 variable "AURORA_CLUSTER_PASSWORD" {}
 
 variable "EFS_FILE_SYSTEM" {}
+
+variable "ECS_TASK_DEFINITION_CPU" {
+  default = 512
+}
+
+variable "ECS_TASK_DEFINITION_MEMORY" {
+  default = 1024
+}

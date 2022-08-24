@@ -226,10 +226,10 @@ resource "random_password" "master_password" {
 }
 
 resource "aws_secretsmanager_secret" "aurora_password" {
-  name        = "aurora-password-2"
+  name        = "aurora-password"
   description = "Database password"
   tags = {
-    Name     = "aurora-password-2"
+    Name     = "aurora-password"
     APP_NAME = "${var.APP_NAME}"
     ENV      = "${var.ENV}"
   }

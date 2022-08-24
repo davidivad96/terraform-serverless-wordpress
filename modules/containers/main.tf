@@ -15,15 +15,15 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   family                   = "ecs-task-definition"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 256
-  memory                   = 512
+  cpu                      = var.ECS_TASK_DEFINITION_CPU
+  memory                   = var.ECS_TASK_DEFINITION_MEMORY
   execution_role_arn       = var.ECS_TASK_DEFINITION_EXECUTION_ROLE_ARN
   container_definitions = jsonencode([
     {
       name : "bitnami-wordpress",
       image : "bitnami/wordpress:6.0.1",
-      cpu : 256,
-      memory : 512,
+      cpu : var.ECS_TASK_DEFINITION_CPU,
+      memory : var.ECS_TASK_DEFINITION_MEMORY,
       portMappings : [{
         containerPort : 8080,
         hostPort : 8080
