@@ -4,8 +4,6 @@ variable "ENV" {}
 
 variable "AWS_REGION" {}
 
-variable "AWS_ACCOUNT_ID" {}
-
 variable "TARGET_GROUP_ARN" {}
 
 variable "PRIVATE_SUBNETS_IDS" {}
