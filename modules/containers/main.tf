@@ -44,6 +44,10 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         name : "WORDPRESS_DATABASE_PASSWORD",
         value : var.AURORA_CLUSTER_PASSWORD,
       }],
+      mountPoints : [{
+        sourceVolume : "bitnami-wordpress-volume",
+        containerPath : "/bitnami/wordpress",
+      }],
       logConfiguration : {
         logDriver : "awslogs",
         options : {
@@ -59,7 +63,6 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
     name = "bitnami-wordpress-volume"
     efs_volume_configuration {
       file_system_id     = var.EFS_FILE_SYSTEM.id
-      root_directory     = "/"
       transit_encryption = "ENABLED"
     }
   }
