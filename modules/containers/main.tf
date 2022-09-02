@@ -64,6 +64,10 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
     efs_volume_configuration {
       file_system_id     = var.EFS_FILE_SYSTEM.id
       transit_encryption = "ENABLED"
+      authorization_config {
+        access_point_id = var.EFS_FILE_SYSTEM_ACCESS_POINT.id
+        iam             = "DISABLED"
+      }
     }
   }
   tags = {

@@ -45,6 +45,7 @@ module "containers" {
   AURORA_CLUSTER                         = module.database.aurora_cluster
   AURORA_CLUSTER_PASSWORD                = module.security.secrets_manager_aurora_password
   EFS_FILE_SYSTEM                        = module.storage.efs_file_system
+  EFS_FILE_SYSTEM_ACCESS_POINT           = module.storage.efs_file_system_access_point
 }
 
 # Security groups, IAM Roles and AWS WAF
